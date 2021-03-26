@@ -12,18 +12,24 @@ the tool on AWS Lambda.
 
 ### Configuration
 
-You need to set three environment variables:
+You need to set five environment variables:
 - `AWS_ACCESS_KEY_ID`: AWS access key id
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
 - `GITLAB_TOKEN`: the Gitlab token to interact with the API
 - `GROUPS_TO_BACKUP`: the Gitlab groups id to backup (you can set one group or several by splitting them with comma)
 - `AWS_S3_BUCKET`: the bucket name where the backup will be stored
 
+There is also **one optional env var**:
+- `GITLAB_URL`: by default, this value is set to `https://gitlab.com`. You can use this env var if you want to backup your 
+on-premise Gitlab.
+
 Example:
 ```
-GITLAB_TOKEN=xxxxxxxx
+GITLAB_TOKEN=xxx
 GROUPS_TO_BACKUP=42,12
 AWS_S3_BUCKET=gitlab_projects_backup
+AWS_ACCESS_KEY_ID=xxxx
+AWS_SECRET_ACCESS_KEY=xxx
 ```
 
 ## Usage
@@ -61,6 +67,7 @@ your backups, the best is to rely on AWS S3 lifecycle (with object expiration).
 - [Managing your storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
 
 **Example: delete exports after 1 year**
+
 Create a lifecycle rule that applies to all objects in the bucket, set "Expire current versions of objects" after 360 
 days and set "Permanently delete previous versions of objects" after 1 day.
 

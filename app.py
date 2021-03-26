@@ -26,6 +26,10 @@ if not 'AWS_SECRET_ACCESS_KEY' in environ:
     print('You need to set "AWS_SECRET_ACCESS_KEY" env var.')
     exit(1)
 
+gitlab_url = 'https://gitlab.com'
+if 'GITLAB_URL' in environ:
+    gitlab_url = environ.get('GITLAB_URL')
+
 project_export_limit_per_minute = 6
 projects_exported_count = 1
 
@@ -63,7 +67,7 @@ def export_project(projectId):
     print('Export launched for ' + p.name + ', moving to next project.')
     print('')
 
-gl = gitlab.Gitlab('https://gitlab.com', private_token=environ.get('GITLAB_TOKEN'))
+gl = gitlab.Gitlab(gitlab_url, private_token=environ.get('GITLAB_TOKEN'))
 
 groups_to_backup = environ.get("GROUPS_TO_BACKUP").split(",")
 
