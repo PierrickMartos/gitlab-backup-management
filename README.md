@@ -52,7 +52,30 @@ docker logs gitlab-backup
 
 ### AWS Lambda
 
+## Extra
 
+### Remove/archive exports after a period
+AWS S3 is really helpfull on managing lifecycle of yours backups. If you want to delete or archive (To Glacier for example)
+your backups, the best is to rely on AWS S3 lifecycle (with object expiration).
+
+- [Managing your storage lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html)
+
+**Example: delete exports after 1 year**
+Create a lifecycle rule that applies to all objects in the bucket, set "Expire current versions of objects" after 360 
+days and set "Permanently delete previous versions of objects" after 1 day.
+
+### Enable encryption and versioning on your AWS S3 bucket
+We really recommends you to enable encryption and versioning on the bucket that will store your exports.
+
+- [Enabling Amazon S3 default bucket encryption](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-bucket-encryption.html)
+- [Enabling versioning on buckets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/manage-versioning-examples.html)
+
+### AWS S3 replication
+
+This tool will export your projects to AWS S3, that's a really great starting point. It's recommended to enable replication 
+to a bucket in another region.
+
+- [Configuring replication on AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-example-walkthroughs.html)
 
 ## What is and is not included in backup
 
