@@ -12,11 +12,14 @@ The only requirements is `Docker`. Then, just clone this repository.
 
 ## Configuration
 
-Five environment variables needs to be configured:
-- `AWS_ACCESS_KEY_ID`: AWS access key id
-- `AWS_SECRET_ACCESS_KEY`: AWS secret key
+You only need to set several environment variables in order to make the script works. Those argument will be pass to Docker 
+container.
+
+Five environment variables must be set:
+- `AWS_ACCESS_KEY_ID`: AWS access key id with RW permissions on the targeted bucket
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key with RW permissions on the targeted bucket
 - `GITLAB_TOKEN`: the Gitlab token to interact with the API
-- `GROUPS_TO_BACKUP`: the Gitlab groups id to backup (you can set one group or several by splitting them with comma)
+- `GROUPS_TO_BACKUP`: the Gitlab groups id to backup (you can set one group or several groups ids by splitting them with comma)
 - `AWS_S3_BUCKET`: the bucket name where the backup will be stored
 
 There is also **one optional env var**:
@@ -34,7 +37,7 @@ AWS_SECRET_ACCESS_KEY=xxx
 
 ## Usage
 
-### Locally
+### Locally (through Docker)
 
 Build your image:
 ```bash
