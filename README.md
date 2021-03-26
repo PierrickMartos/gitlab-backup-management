@@ -8,11 +8,11 @@ the tool on AWS Lambda.
 
 ## Install
 
+The only requirements is `Docker`. Then, just clone this repository.
 
+## Configuration
 
-### Configuration
-
-You need to set five environment variables:
+Five environment variables needs to be configured:
 - `AWS_ACCESS_KEY_ID`: AWS access key id
 - `AWS_SECRET_ACCESS_KEY`: AWS secret key
 - `GITLAB_TOKEN`: the Gitlab token to interact with the API
@@ -43,7 +43,8 @@ docker build -t gitlab-backup .
 
 Run your image locally (args order are important, --env needs to be before docker image):
 ```bash
-docker run --env GITLAB_TOKEN=xx --env GROUPS_TO_BACKUP=42 --env AWS_S3_BUCKET=gitlab_projects_backup --env AWS_ACCESS_KEY_ID=xx --env AWS_SECRET_ACCESS_KEY=xx -p 9000:8080 --name gitlab-backup gitlab-backup 
+docker run --env GITLAB_TOKEN=xx --env GROUPS_TO_BACKUP=42 --env AWS_S3_BUCKET=gitlab_projects_backup \
+    --env AWS_ACCESS_KEY_ID=xx --env AWS_SECRET_ACCESS_KEY=xx -p 9000:8080 --name gitlab-backup gitlab-backup 
 ```
 
 In a separate terminal, you can then locally invoke the function using cURL:
@@ -51,12 +52,15 @@ In a separate terminal, you can then locally invoke the function using cURL:
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
 ```
 
+### AWS Lambda
+WIP
+
+## Debug
+
 View logs:
 ```bash
 docker logs gitlab-backup
 ```
-
-### AWS Lambda
 
 ## Extra
 
