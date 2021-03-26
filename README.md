@@ -1,6 +1,6 @@
-# Gitlab backup management
+# Gitlab project backup management
 
-Gitlab backup management is a python tool for Gitlab to backup all your projects into AWS S3. The tool enable you to define 
+Gitlab project backup management is a python tool for Gitlab to backup all (or some) of your projects into AWS S3. The tool enable you to define 
 which groups you want to backup and automatically loop through them to backup all projects and send the archive on AWS S3.
 
 We also provide a Docker image so that you can be able to run it easilly. Finally, we also provide a full guide to setup 
