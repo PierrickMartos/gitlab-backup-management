@@ -55,8 +55,42 @@ In a separate terminal, you can then locally invoke the function using cURL:
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
 ```
 
-### AWS Lambda
-WIP
+### AWS Lambda (with scheduling through Cloudwatch event)
+
+The objective is to setup an AWS Lambda to execute backup on a regular basis with AWS Cloudwatch (every 24 hours for eg).
+
+1. First, you need to create a registry in Amazon Container Services. Then, copy the `URI` of your private registry.
+
+2. Authenticate the Docker CLI to your Amazon ECR registry (replace accordingly the region and the ECR URI from previous copy):
+```bash
+aws ecr get-login-password --region [us-east-1] | docker login --username AWS --password-stdin [123456789012.dkr.ecr.us-east-1.amazonaws.com]
+```
+
+3. Tag your image to match your repository name, and deploy the image to Amazon ECR using the docker push command (replace accordingly the region and the ECR URI):
+```bash
+docker tag gitlab-backup:latest 123456789012.dkr.ecr.us-east-1.amazonaws.com/gitlab-backup:latest
+docker push 123456789012.dkr.ecr.us-east-1.amazonaws.com/gitlab-backup:latest
+```
+
+4. Now, you can see your docker image in the ECR repository.
+PS: you can find those commands in the repository page, by clicking "View push commands" button in top right.
+
+5. Create a lambda function by selecting "Container image", set a lambda name and select your image just uploaded.
+
+6. You need to define environment variables in the Lambda console, please follow the steps here:
+https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-config. See the [#Configuration](#Configuration) section for the list of env vars needed to be set.
+
+**Note: you need to set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` only if the lambda role don't have permissions 
+to write on your bucket.** Best is to set permissions on the created lambda role.
+
+7. Increase timeout, since Gitlab API have rates limit, we cannot export more than 6 projects per minutes. So depending 
+of the volume of projects you want to export, you'll need to improve lambda timeout. 
+
+8. Test the whole thing by sending a test event.
+
+9. Setup a cloudwatch event to launch your Lambda on a regular basis: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/RunLambdaSchedule.html
+
+10. Done!
 
 ## Debug
 
